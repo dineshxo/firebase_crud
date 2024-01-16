@@ -1,3 +1,4 @@
+import 'package:firebase_crud/components/round_btn.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -32,9 +33,10 @@ class _HomeState extends State<Home> {
               )
             ],
           )),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.add),
+      body: RoundButton(
+        onTap: () {
+          Navigator.pushNamed(context, '/addEmp');
+        },
       ),
     );
   }
