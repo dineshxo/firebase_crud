@@ -1,3 +1,4 @@
+import 'package:firebase_crud/pages/employee.dart';
 import 'package:firebase_crud/pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,6 +22,9 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.lato().fontFamily,
       ),
       home: const Home(),
+      routes: {
+        '/addEmp': (context) => const Employee(),
+      },
     );
   }
 }
