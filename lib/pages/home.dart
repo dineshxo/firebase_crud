@@ -35,6 +35,7 @@ class _HomeState extends State<Home> {
           )),
       body: RoundButton(
         onTap: () {
+          print('pressed');
           Navigator.pushNamed(context, '/addEmp');
         },
       ),
