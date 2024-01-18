@@ -116,19 +116,32 @@ class _EmployeeState extends State<Employee> {
                     };
 
                     try {
-                      await DatabaseMethods()
-                          .addEmpInfo(employeeInfoMap, id)
-                          .then(
-                            (value) => Fluttertoast.showToast(
-                                msg: "Employee info added successfully!",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIosWeb: 1,
-                                backgroundColor: Colors.red,
-                                textColor: Colors.white,
-                                fontSize: 16.0),
-                          );
-                      clearTextFields();
+                      if (nameController.text.isEmpty ||
+                          ageController.text.isEmpty ||
+                          locationController.text.isEmpty) {
+                        Fluttertoast.showToast(
+                            msg: "Please Fill the form.",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      } else {
+                        await DatabaseMethods()
+                            .addEmpInfo(employeeInfoMap, id)
+                            .then(
+                              (value) => Fluttertoast.showToast(
+                                  msg: "Employee info added successfully!",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0),
+                            );
+                        clearTextFields();
+                      }
                     } catch (err) {
                       print(err.toString());
                     }
