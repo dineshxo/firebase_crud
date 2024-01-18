@@ -12,12 +12,12 @@ class RoundButton extends StatelessWidget {
         onTap();
       },
       shape: const CircleBorder(),
-      fillColor: Colors.orange,
-      constraints: const BoxConstraints.tightFor(width: 50, height: 50),
+      fillColor: Colors.blue,
+      constraints: const BoxConstraints.tightFor(width: 60, height: 60),
       child: const Icon(
         Icons.add,
-        size: 30,
-        color: Colors.blue,
+        size: 35,
+        color: Color.fromARGB(255, 255, 255, 255),
       ),
     );
   }
