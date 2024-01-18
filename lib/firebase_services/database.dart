@@ -18,4 +18,18 @@ class DatabaseMethods {
           QuerySnapshot>.empty(); // Return an empty stream in case of an error
     }
   }
+
+  Future updateEmp(String id, Map<String, dynamic> updateEmpInfo) async {
+    return await FirebaseFirestore.instance
+        .collection('Employee')
+        .doc(id)
+        .update(updateEmpInfo);
+  }
+
+  Future deleteEmp(String id) async {
+    return await FirebaseFirestore.instance
+        .collection('Employee')
+        .doc(id)
+        .delete();
+  }
 }

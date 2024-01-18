@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_crud/components/constraints.dart';
 import 'package:firebase_crud/components/round_btn.dart';
 import 'package:firebase_crud/firebase_services/database.dart';
 import 'package:flutter/material.dart';
@@ -13,16 +14,20 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   Stream? EmployeeStream;
 
-  getontheload() async {
+  getOnTheLoad() async {
     EmployeeStream = await DatabaseMethods().getEmpInfo();
     setState(() {});
   }
 
   @override
   void initState() {
-    getontheload();
+    getOnTheLoad();
     super.initState();
   }
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
 
   Widget allEmpDetails() {
     return StreamBuilder(
@@ -51,18 +56,47 @@ class _HomeState extends State<Home> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Name: ' + ds['Name'],
-                      style: const TextStyle(
-                          fontSize: 18,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold),
+                    Row(
+                      children: [
+                        Text(
+                          'Name: ' + ds['Name'],
+                          style: const TextStyle(
+                              fontSize: 18,
+                              color: Color.fromARGB(255, 255, 255, 255),
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Spacer(),
+                        GestureDetector(
+                          onTap: () {
+                            nameController.text = ds['Name'];
+                            ageController.text = ds['Age'];
+                            locationController.text = ds['Location'];
+                            editEmp(ds['Id']);
+                          },
+                          child: const Icon(
+                            Icons.edit,
+                            color: Colors.blue,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            await DatabaseMethods().deleteEmp(ds['Id']);
+                          },
+                          child: const Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ),
+                        )
+                      ],
                     ),
                     Text(
                       'Age: ' + ds['Age'],
                       style: const TextStyle(
                           fontSize: 18,
-                          color: Colors.blue,
+                          color: Color.fromARGB(255, 255, 255, 255),
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
@@ -116,11 +150,135 @@ class _HomeState extends State<Home> {
             bottom: 16.0,
             right: 16.0,
             child: RoundButton(
+              icon: Icons.add,
               onTap: () {
                 Navigator.pushNamed(context, '/addEmp');
               },
             ),
           ),
         ]));
+  }
+
+  Future editEmp(String id) async {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Edit',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 255, 149, 0)),
+                        ),
+                        Text(
+                          'Employee',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Name',
+                          style: kInputFieldDeco,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        SizedBox(
+                          height: 60,
+                          child: TextField(
+                            controller: nameController,
+                            decoration: inputDecoration,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          'Age',
+                          style: kInputFieldDeco,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        SizedBox(
+                          height: 60,
+                          child: TextField(
+                            controller: ageController,
+                            decoration: inputDecoration,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Text(
+                          'Location',
+                          style: kInputFieldDeco,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        SizedBox(
+                          height: 60.0,
+                          child: TextField(
+                            controller: locationController,
+                            decoration: inputDecoration,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            RoundButton(
+                                onTap: () async {
+                                  Map<String, dynamic> updateEmpInfo = {
+                                    'Name': nameController.text,
+                                    'Age': ageController.text,
+                                    'Location': locationController.text,
+                                    'Id': id,
+                                  };
+
+                                  try {
+                                    await DatabaseMethods()
+                                        .updateEmp(id, updateEmpInfo);
+                                    Navigator.pop(context);
+                                  } catch (err) {
+                                    print(err.toString());
+                                  }
+                                },
+                                icon: Icons.check),
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            RoundButton(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: Icons.close)
+                          ],
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ));
   }
 }
