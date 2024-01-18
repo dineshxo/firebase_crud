@@ -14,4 +14,4 @@ InputDecoration inputDecoration = InputDecoration(
 );
 
 const kInputFieldDeco =
-    TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue);
+    TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.blue);

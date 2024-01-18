@@ -115,16 +115,23 @@ class _EmployeeState extends State<Employee> {
                       'Id': id,
                     };
 
-                    await DatabaseMethods()
-                        .addEmpInfo(employeeInfoMap, id)
-                        .then((value) => Fluttertoast.showToast(
-                            msg: "Employee info added successfully!",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.CENTER,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: Colors.red,
-                            textColor: Colors.white,
-                            fontSize: 16.0));
+                    try {
+                      await DatabaseMethods()
+                          .addEmpInfo(employeeInfoMap, id)
+                          .then(
+                            (value) => Fluttertoast.showToast(
+                                msg: "Employee info added successfully!",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0),
+                          );
+                      clearTextFields();
+                    } catch (err) {
+                      print(err.toString());
+                    }
                   },
                   child: const Text(
                     'Done',
@@ -140,5 +147,11 @@ class _EmployeeState extends State<Employee> {
         ),
       ),
     );
+  }
+
+  void clearTextFields() {
+    nameController.clear();
+    ageController.clear();
+    locationController.clear();
   }
 }
