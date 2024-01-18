@@ -1,6 +1,9 @@
 import 'package:firebase_crud/components/constraints.dart';
+import 'package:firebase_crud/firebase_services/database.dart';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:random_string/random_string.dart';
 
 class Employee extends StatefulWidget {
   const Employee({super.key});
@@ -10,6 +13,10 @@ class Employee extends StatefulWidget {
 }
 
 class _EmployeeState extends State<Employee> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +57,7 @@ class _EmployeeState extends State<Employee> {
               SizedBox(
                 height: 60,
                 child: TextField(
+                  controller: nameController,
                   decoration: inputDecoration,
                 ),
               ),
@@ -66,6 +74,7 @@ class _EmployeeState extends State<Employee> {
               SizedBox(
                 height: 60,
                 child: TextField(
+                  controller: ageController,
                   decoration: inputDecoration,
                 ),
               ),
@@ -82,6 +91,7 @@ class _EmployeeState extends State<Employee> {
               SizedBox(
                 height: 60.0,
                 child: TextField(
+                  controller: locationController,
                   decoration: inputDecoration,
                 ),
               ),
@@ -96,7 +106,26 @@ class _EmployeeState extends State<Employee> {
                     backgroundColor:
                         MaterialStateProperty.all<Color>(Colors.orange),
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    String id = randomAlphaNumeric(10);
+                    Map<String, dynamic> employeeInfoMap = {
+                      'Name': nameController.text,
+                      'Age': ageController.text,
+                      'Location': locationController.text,
+                      'Id': id,
+                    };
+
+                    await DatabaseMethods()
+                        .addEmpInfo(employeeInfoMap, id)
+                        .then((value) => Fluttertoast.showToast(
+                            msg: "Employee info added successfully!",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0));
+                  },
                   child: const Text(
                     'Done',
                     style: TextStyle(
