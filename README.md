@@ -1,16 +1,4 @@
 # firebase_crud
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Simple CRUD Operations with Firebase![Screenshot 2024-01-19 172651](https://github.com/dineshxo/firebase_crud/assets/95670930/1dc50055-4989-4a15-a4aa-3ccf151bceba)
+![Screenshot 2024-01-19 172709](https://github.com/dineshxo/firebase_crud/assets/95670930/ddaed601-7841-4442-8e36-9d2d7d7656f1)
